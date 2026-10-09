@@ -149,6 +149,15 @@ export default function FriendsPage() {
         invalidateFriendData,
     });
 
+  const removeMutation =
+    useMutation({
+      mutationFn:
+        removeFriend,
+
+      onSuccess:
+        invalidateFriendData,
+    });
+
   const openChatMutation =
     useMutation({
       mutationFn:
@@ -168,6 +177,7 @@ export default function FriendsPage() {
     cancelMutation.isPending ||
     acceptMutation.isPending ||
     rejectMutation.isPending ||
+    removeMutation.isPending ||
     openChatMutation.isPending;
 
   return (
@@ -386,6 +396,18 @@ export default function FriendsPage() {
                       userId
                     )
                   }
+
+                  onRemove={(userId) => {
+                    if (
+                      window.confirm(
+                        'Remove this friend?'
+                      )
+                    ) {
+                      removeMutation.mutate(
+                        userId
+                      );
+                    }
+                  }}
                 />
               )
             )}

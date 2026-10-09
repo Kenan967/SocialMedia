@@ -3,11 +3,13 @@ import api from '../../../api/axios';
 export async function getPosts({
   page = 1,
   pageSize = 10,
+  search = '',
 }) {
   const response = await api.get('/posts', {
     params: {
       page,
       pageSize,
+      search,
     },
   });
 

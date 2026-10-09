@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -209,7 +209,8 @@ public class PostsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult> GetFeed(
         [FromQuery] int page = 1,
-        [FromQuery] int pageSize = 10)
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? search = null)
     {
         var userId = GetCurrentUserId();
 
@@ -218,6 +219,17 @@ public class PostsController : ControllerBase
 
         var query = _dbContext.Posts
             .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.Trim();
+
+            query = query.Where(x =>
+                (x.Content != null && x.Content.Contains(search)) ||
+                x.User.FirstName.Contains(search) ||
+                x.User.LastName.Contains(search) ||
+                (x.User.UserName != null && x.User.UserName.Contains(search)));
+        }
 
         var totalCount = await query.CountAsync();
 

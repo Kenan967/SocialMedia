@@ -12,6 +12,7 @@ import PersonAddAlt1RoundedIcon from '@mui/icons-material/PersonAddAlt1Rounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import ScheduleRoundedIcon from '@mui/icons-material/ScheduleRounded';
 import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
+import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
 import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 
 import { API_ORIGIN } from '../../../config';
@@ -24,6 +25,7 @@ export default function PeopleCard({
   onAccept,
   onReject,
   onMessage,
+  onRemove,
 
   loading,
 }) {
@@ -82,6 +84,30 @@ export default function PeopleCard({
             >
               Message
             </Button>
+
+            {onRemove && (
+              <Button
+                variant="outlined"
+                color="error"
+                startIcon={
+                  <PersonOffOutlinedIcon />
+                }
+                disabled={loading}
+                onClick={() =>
+                  onRemove(user.id)
+                }
+                sx={{
+                  borderRadius: 999,
+
+                  textTransform:
+                    'none',
+
+                  fontWeight: 800,
+                }}
+              >
+                Remove
+              </Button>
+            )}
           </Stack>
         );
 
